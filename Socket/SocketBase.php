@@ -21,13 +21,13 @@ abstract class SocketBase
     $this->domin_type = $domin;
     $this->type = $type;
     switch($type) {
-      case self::TYPE_TCP:
+      case SOCK_STREAM:
         $this->protocol = SOL_TCP;
         break;
-      case self::TYPE_UDP:
+      case SOCK_DGRAM:
         $this->protocol = SOL_UDP;
         break;
-      case self::TYPE_ICMP:
+      case SOCK_RAW:
         $this->protocol = getprotobyname("icmp");
         break;
       default:
