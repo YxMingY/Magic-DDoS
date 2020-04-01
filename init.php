@@ -53,7 +53,7 @@ for($i=0;$i<$thread;$i++) {
   $attackers[] = new Attacker($host,$port,$i+1);
 }
 println("Are you ready?");
-sleep(1);
+sleep(3);
 println("Go gO GO LeTs go!");
 println("We are the fucking ANIMALS!!!");
 foreach($attackers as $a) {
