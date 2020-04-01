@@ -4,27 +4,49 @@ require "io_tools.php";
 require "Attacker.php";
 println("is starting!!!");
 println("Eventbody fucking jump!");
-println("Input target host: ");
-$host = is_ipv4($in=in()) ? $in : gethostbyname($in);
-while(true) {
-  println("Input target port: ");
-  $port = in();
-  if(!is_numeric($port)) {
-    println("Port must be a valid number!");
-  }else {
+do{
+  if(file_exists("config.txt")) {
+    println("Recognized the config, checking...");
+    $data = trim(file_get_contents("config.txt"));
+    $data = explode("\n",$data);
+    $check = count($data) == 3;
+    foreach($data as &$line) {
+      $line = trim($line);
+    }
+    if(!is_numeric($data[1]) || !is_numeric($data[2]))
+        $check = false;
+  }
+  if($check) {
+    $host = is_ipv4($data[0]) ? $data[0] : gethostbyname($data[0]);
+    $port = $data[1];
+    $thread = $data[2];
+    println("Successful checked");
+    break;
+  }else{
+    println("Invalid config.");
+  }
+  println("Input target host: ");
+  $host = is_ipv4($in=in()) ? $in : gethostbyname($in);
+  while(true) {
+    println("Input target port: ");
+    $port = in();
+    if(!is_numeric($port)) {
+      println("Port must be a valid number!");
+    }else {
     break;
   }
-}
-while(true) {
-  println("Input thread number: ");
-  $thread = in();
-  if(!is_numeric($thread)) {
-    println("Thread must be a valid number!");
-  }else {
-    break;
   }
-}
-println("Host: ".$host." | Port ".$port);
+  while(true) {
+    println("Input thread number: ");
+    $thread = in();
+    if(!is_numeric($thread)) {
+      println("Thread must be a valid number!");
+    }else {
+      break;
+    }
+  }
+}while(false);
+println("Host: ".$host." | Port ".$port." | Thread: ".$thread);
 println("Preparing thread...");
 $attackers = [];
 for($i=0;$i<$thread;$i++) {
